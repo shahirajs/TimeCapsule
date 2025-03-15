@@ -17,13 +17,13 @@ struct SelectDateView: View {
                         .edgesIgnoringSafeArea(.all)
                     
                     VStack {
-                        orderHeader()
+                        //orderHeader()
                         ScrollView {
                             content()
                                 .padding(.top, 20)
                         }
                         Spacer()
-                        bottomNavigationBar()
+                        //bottomNavigationBar()
                     }
                 }
             }
@@ -43,7 +43,6 @@ struct SelectDateView: View {
                     .foregroundStyle(.white)
                     .padding(.top, 45)
                     .padding(.bottom, 10)
-                    .font(.custom("American Typewriter", size: 28))
             
             Image(systemName: "person.circle.fill")
                     .resizable()
@@ -60,7 +59,16 @@ struct SelectDateView: View {
     @ViewBuilder
     func content() -> some View {
         VStack {
-            Text("Select a date for future you to open")
+            NavigationLink(destination: ContentView()) {
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
+                    .foregroundColor(.white)
+                    .padding(.leading, 290)
+            }
+            
+            Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
@@ -201,13 +209,7 @@ struct SelectDateView: View {
                     .padding(.leading, 20)
                 }
                 
-                Button(action: {
-                    if currentIndex < numberOfRectangles - 1 {
-                        currentIndex += 1
-                    } else {
-                        loadMoreContent()
-                    }
-                }) {
+                NavigationLink(destination: ContentView()) {
                     Text("Next")
                         .fontWeight(.semibold)
                         .font(.system(size: 30))
