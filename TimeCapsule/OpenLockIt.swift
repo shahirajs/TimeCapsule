@@ -32,7 +32,7 @@ struct OpenLockIt: View {
                 .frame(maxWidth: .infinity, maxHeight: 150)
                 .edgesIgnoringSafeArea(.top)
             
-            Text("Lockit")
+            Text("LockIt")
                 .fontWeight(.semibold)
                 .font(.system(size: 25))
                 .foregroundStyle(.white)

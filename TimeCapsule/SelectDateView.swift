@@ -13,8 +13,11 @@ struct SelectDateView: View {
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
     @State private var audioURLs: [URL?] = Array(repeating: nil, count: 10)
-    @State private var isRecording: Bool = false // To track the recording status
-    @State private var recordingTime: Int = 0 // Track the recording duration
+    @State private var isRecording: Bool = false
+    @State private var recordingTime: Int = 0
+    @State private var songName: String = ""  // Added to store the song name
+    @State private var isPopupPresented: Bool = false // To track popup visibility
+    @State private var songNames: [String] = Array(repeating: "", count: 10) // Store song names for each index
     
     var body: some View {
         NavigationStack {
@@ -45,14 +48,14 @@ struct SelectDateView: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.white)
                     .padding(.leading, 290)
-                    .padding(.top, 5)
+                    .padding(.top, 10)
             }
 
             Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
-                .padding(.top, 40)
+                .padding(.top, 35)
                 .padding(.bottom, 10)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
@@ -63,7 +66,7 @@ struct SelectDateView: View {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
                     VStack {
                         if let audioURL = audioURLs[index] {
-                            // Only show the play button for the audio if it exists
+                            // Show play button for the audio if it exists
                             Button(action: {
                                 playAudio(from: audioURL)
                             }) {
@@ -79,7 +82,7 @@ struct SelectDateView: View {
                                     .padding(.top, 130)
                             }
                         } else if let selectedImage = selectedImages[index] {
-                            // Only show the image if it's present
+                            // Show image if it exists
                             selectedImage
                                 .resizable()
                                 .scaledToFit()
@@ -87,26 +90,27 @@ struct SelectDateView: View {
                                 .cornerRadius(10)
                                 .padding(.top, 10)
                         } else {
-                            // If no image or audio, show text fields
-                            TextField("Add a title...", text: $titles[index])
-                                .foregroundColor(Color("textColor1"))
-                                .accentColor(Color("textColor1"))
-                                .font(.system(size: 30))
-                                .padding()
-                                .cornerRadius(10)
-                                .padding(.horizontal)
-
-                            TextField("Write a message...", text: $messages[index])
-                                .font(.system(size: 20))
-                                .foregroundColor(Color("textColor1"))
-                                .accentColor(Color("textColor1"))
-                                .background(Color.white.opacity(0.7))
-                                .padding(.top, -25)
-                                .padding(.leading, 15)
-                                .padding(.horizontal)
-                                .frame(minHeight: 50)
+                            // Show song name and play button if song exists
+                            if !songNames[index].isEmpty {
+                                Button(action: {
+                                    // Play the audio associated with this song
+                                    if let audioURL = audioURLs[index] {
+                                        playAudio(from: audioURL)
+                                    }
+                                }) {
+                                    Text("Play: \(songNames[index])")
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(.accent)
+                                        .cornerRadius(40)
+                                        .padding(.horizontal, 40)
+                                        .padding(.top, 130)
+                                }
+                            }
                         }
-
                         Spacer()
                     }
                     .frame(width: UIScreen.main.bounds.width - 40, height: 340)
@@ -156,14 +160,14 @@ struct SelectDateView: View {
                 // Voice Memo Button (Updated)
                 Button(action: {
                     if isRecording {
-                        stopRecording() // Stop the recording if it's already in progress
+                        stopRecording() // Stop recording if in progress
                     } else {
-                        startRecording(for: currentIndex) // Start recording if not already recording
+                        startRecording(for: currentIndex) // Start recording if not recording
                     }
                 }) {
                     ZStack {
                         Circle()
-                            .fill(isRecording ? Color.red : Color.white) // Red color while recording
+                            .fill(isRecording ? Color.red : Color.white)
                             .frame(width: 65, height: 65)
 
                         Text(isRecording ? "⏹️" : "🎤")
@@ -174,7 +178,7 @@ struct SelectDateView: View {
                 .padding(.horizontal, 10)
                 
                 Button(action: {
-                    
+                    isPopupPresented = true // Show the popup when the headphone button is pressed
                 }) {
                     ZStack {
                         Circle()
@@ -215,7 +219,6 @@ struct SelectDateView: View {
                         .cornerRadius(40)
                         .padding(.horizontal, 40)
                 }
-
             }
             .padding(.top, 20)
         }
@@ -231,10 +234,49 @@ struct SelectDateView: View {
                 }
             }
         }
+        .alert(isPresented: $isPopupPresented) {
+            Alert(
+                title: Text("Enter Song Name"),
+                message: Text("Enter a name for the song you want to save."),
+                primaryButton: .default(Text("Save")) {
+                    songNames[currentIndex] = songName // Save the song name
+                    isPopupPresented = false // Dismiss the popup
+                },
+                secondaryButton: .cancel() {
+                    isPopupPresented = false // Dismiss the popup
+                }
+            )
+        }
+
+        // Use a sheet to display the text field:
+        .sheet(isPresented: $isPopupPresented) {
+            VStack {
+                Text("Enter Song Name")
+                    .font(.headline)
+                    .padding()
+
+                TextField("Song name", text: $songName)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+
+                HStack {
+                    Button("Save") {
+                        songNames[currentIndex] = songName
+                        isPopupPresented = false
+                    }
+                    .padding()
+
+                    Button("Cancel") {
+                        isPopupPresented = false
+                    }
+                    .padding()
+                }
+            }
+            .padding()
+        }
     }
 
-
-    
     func startRecording(for index: Int) {
         let audioFilename = getDocumentsDirectory().appendingPathComponent("voiceMemo_\(index).m4a")
         

@@ -141,7 +141,7 @@ struct NoteView: View {
             }
             
             NavigationLink(destination: ContentView()) {
-                Text("Bury Lockit!")
+                Text("Bury LockIt!")
                     .fontWeight(.bold)
                     .font(.system(size: 30))
                     .foregroundColor(Color("textColor3"))
