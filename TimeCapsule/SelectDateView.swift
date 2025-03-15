@@ -1,14 +1,20 @@
 import SwiftUI
 import PhotosUI
+import AVFoundation
 
 struct SelectDateView: View {
     @State private var numberOfRectangles = 1
     @State private var currentIndex = 0
     @State private var titles: [String] = Array(repeating: "", count: 10)
     @State private var messages: [String] = Array(repeating: "", count: 10)
-    @State private var selectedImages: [Image?] = Array(repeating: nil, count: 10) // Array for selected images
-    @State private var selectedItem: PhotosPickerItem? = nil // Declare selectedItem
-    @State private var isPhotoPickerPresented = false // State to control the display of the photo picker
+    @State private var selectedImages: [Image?] = Array(repeating: nil, count: 10)
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var isPhotoPickerPresented = false
+    @State private var audioRecorder: AVAudioRecorder?
+    @State private var audioPlayer: AVAudioPlayer?
+    @State private var audioURLs: [URL?] = Array(repeating: nil, count: 10)
+    @State private var isRecording: Bool = false // To track the recording status
+    @State private var recordingTime: Int = 0 // Track the recording duration
     
     var body: some View {
         NavigationStack {
@@ -39,24 +45,49 @@ struct SelectDateView: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.white)
                     .padding(.leading, 290)
+                    .padding(.top, 5)
             }
-            
+
             Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
-                .padding(.top, 45)
+                .padding(.top, 40)
                 .padding(.bottom, 10)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
                 .tracking(0.7)
-            
+
             TabView(selection: $currentIndex) {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
                     VStack {
-                        // Only show the TextFields if there's no selected image
-                        if selectedImages[index] == nil {
+                        if let audioURL = audioURLs[index] {
+                            // Only show the play button for the audio if it exists
+                            Button(action: {
+                                playAudio(from: audioURL)
+                            }) {
+                                Text("▶️ Play Voice Memo")
+                                    .fontWeight(.semibold)
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(.accent)
+                                    .cornerRadius(40)
+                                    .padding(.horizontal, 40)
+                                    .padding(.top, 130)
+                            }
+                        } else if let selectedImage = selectedImages[index] {
+                            // Only show the image if it's present
+                            selectedImage
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: UIScreen.main.bounds.width - 60, height: 350)
+                                .cornerRadius(10)
+                                .padding(.top, 10)
+                        } else {
+                            // If no image or audio, show text fields
                             TextField("Add a title...", text: $titles[index])
                                 .foregroundColor(Color("textColor1"))
                                 .accentColor(Color("textColor1"))
@@ -64,7 +95,7 @@ struct SelectDateView: View {
                                 .padding()
                                 .cornerRadius(10)
                                 .padding(.horizontal)
-                            
+
                             TextField("Write a message...", text: $messages[index])
                                 .font(.system(size: 20))
                                 .foregroundColor(Color("textColor1"))
@@ -75,20 +106,10 @@ struct SelectDateView: View {
                                 .padding(.horizontal)
                                 .frame(minHeight: 50)
                         }
-                        
-                        // Display image if available
-                        if let selectedImage = selectedImages[index] {
-                            selectedImage
-                                .resizable()
-                                .scaledToFit() // This makes the image scale proportionally without distortion
-                                .frame(width: UIScreen.main.bounds.width - 60, height: 350) // Adjust size to match rectangle
-                                .cornerRadius(10)
-                                .padding(.top, 10)
-                        }
-                        
+
                         Spacer()
                     }
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 340) // Ensure the frame size is consistent
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 340)
                     .foregroundStyle(.white)
                     .background(Color.white)
                     .cornerRadius(25)
@@ -115,11 +136,11 @@ struct SelectDateView: View {
                         .padding(10)
                 }
             }
-            
+
             // Camera Button (Updated)
             HStack {
                 Button(action: {
-                    isPhotoPickerPresented = true // Trigger the photo picker to show
+                    isPhotoPickerPresented = true
                 }) {
                     ZStack {
                         Circle()
@@ -131,11 +152,42 @@ struct SelectDateView: View {
                             .foregroundColor(.white)
                     }
                 }
-                .padding(.horizontal, 5)
 
-                // Other buttons here...
+                // Voice Memo Button (Updated)
+                Button(action: {
+                    if isRecording {
+                        stopRecording() // Stop the recording if it's already in progress
+                    } else {
+                        startRecording(for: currentIndex) // Start recording if not already recording
+                    }
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(isRecording ? Color.red : Color.white) // Red color while recording
+                            .frame(width: 65, height: 65)
+
+                        Text(isRecording ? "⏹️" : "🎤")
+                            .font(.largeTitle)
+                            .foregroundColor(isRecording ? .white : .white)
+                    }
+                }
+                .padding(.horizontal, 10)
+                
+                Button(action: {
+                    
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 65, height: 65)
+
+                        Text("🎧")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                    }
+                }
             }
-            
+
             HStack {
                 Button(action: {
                     //action
@@ -151,7 +203,7 @@ struct SelectDateView: View {
                     }
                     .padding(.leading, 20)
                 }
-                
+
                 NavigationLink(destination: ContentView()) {
                     Text("Next")
                         .fontWeight(.semibold)
@@ -167,13 +219,13 @@ struct SelectDateView: View {
             }
             .padding(.top, 20)
         }
-        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedItem, matching: .images, photoLibrary: .shared()) // Display photo picker
+        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedItem, matching: .images, photoLibrary: .shared())
         .onChange(of: selectedItem) { newItem in
             Task {
                 if let newItem {
                     if let data = try? await newItem.loadTransferable(type: Data.self) {
                         if let uiImage = UIImage(data: data) {
-                            selectedImages[currentIndex] = Image(uiImage: uiImage) // Store selected image for the current index
+                            selectedImages[currentIndex] = Image(uiImage: uiImage)
                         }
                     }
                 }
@@ -181,14 +233,87 @@ struct SelectDateView: View {
         }
     }
 
+
+    
+    func startRecording(for index: Int) {
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("voiceMemo_\(index).m4a")
+        
+        // Ensure the file path is valid
+        if FileManager.default.fileExists(atPath: audioFilename.path) {
+            print("File already exists: \(audioFilename.path)")
+        }
+        
+        // Correct audio settings
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100, // Standard sample rate for audio
+            AVNumberOfChannelsKey: 1, // Mono channel
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue // High audio quality
+        ]
+        
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+            audioRecorder?.prepareToRecord() // Explicitly prepare the recorder before starting
+            audioRecorder?.record()
+            isRecording = true
+            recordingTime = 0
+            audioURLs[index] = audioFilename
+            
+            startRecordingTimer()
+        } catch {
+            print("Failed to start recording: \(error)")
+        }
+    }
+    
+    func stopRecording() {
+        audioRecorder?.stop()
+        isRecording = false
+        
+        if let url = audioURLs[currentIndex], FileManager.default.fileExists(atPath: url.path) {
+            print("Recording saved at: \(url.path)")
+        } else {
+            print("Failed to save the recording.")
+        }
+    }
+    
+    func playAudio(from url: URL) {
+        if FileManager.default.fileExists(atPath: url.path) {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.prepareToPlay() // Explicitly prepare the player before playing
+                audioPlayer?.play()
+                print("Playing audio from: \(url.path)")
+            } catch {
+                print("Failed to play audio: \(error)")
+            }
+        } else {
+            print("Audio file does not exist at path: \(url.path)")
+        }
+    }
     
     func loadMoreContent() {
         if numberOfRectangles < 10 {
             numberOfRectangles += 1
             titles.append("")
             messages.append("")
-            selectedImages.append(nil) // Add placeholder for new image
+            selectedImages.append(nil)
+            audioURLs.append(nil)
         }
+    }
+
+    func startRecordingTimer() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            if isRecording {
+                recordingTime += 1
+            } else {
+                timer.invalidate()
+            }
+        }
+    }
+
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 }
 
