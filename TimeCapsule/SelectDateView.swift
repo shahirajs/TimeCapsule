@@ -1,60 +1,31 @@
-//
-//  SelectDateView.swift
-//  TimeCapsule
-//
-//  Created by Shahira Jasmine on 15/3/2025.
-//
-
 import SwiftUI
+import PhotosUI
 
 struct SelectDateView: View {
+    @State private var isImagePickerPresented = false
+    @State private var selectedImage: Image? = nil
+
     var body: some View {
-            NavigationStack {
-                ZStack {
-                    Image("gree")
-                        .resizable()
-                        .scaledToFill()
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    VStack {
-                        //orderHeader()
-                        ScrollView {
-                            content()
-                                .padding(.top, 20)
-                        }
-                        Spacer()
-                        //bottomNavigationBar()
+        NavigationStack {
+            ZStack {
+                Image("gree")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack {
+                    ScrollView {
+                        content()
+                            .padding(.top, 20)
                     }
+                    Spacer()
                 }
             }
+            .sheet(isPresented: $isImagePickerPresented) {
+                SelectImageView(selectedImage: $selectedImage)
+            }
         }
-    
-    
-    @ViewBuilder
-    func orderHeader() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 150)
-                .edgesIgnoringSafeArea(.top)
-            
-                Text("Lockit")
-                    .fontWeight(.semibold)
-                    .font(.system(size: 25))
-                    .foregroundStyle(.white)
-                    .padding(.top, 45)
-                    .padding(.bottom, 10)
-            
-            Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.white)
-                    .padding(.top, 35)
-                    .padding(.leading, 290)
-        }
-        .frame(height: 100)
     }
-    
 
     @ViewBuilder
     func content() -> some View {
@@ -67,7 +38,7 @@ struct SelectDateView: View {
                     .foregroundColor(.white)
                     .padding(.leading, 290)
             }
-            
+
             Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
@@ -78,7 +49,8 @@ struct SelectDateView: View {
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
                 .tracking(0.7)
-            
+
+            // Swipeable rectangles
             TabView(selection: $currentIndex) {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
                     VStack {
@@ -89,7 +61,7 @@ struct SelectDateView: View {
                             .padding()
                             .cornerRadius(10)
                             .padding(.horizontal)
-                        
+
                         TextField("Write a message...", text: $messages[index])
                             .font(.system(size: 20))
                             .foregroundColor(Color("textColor1"))
@@ -99,6 +71,16 @@ struct SelectDateView: View {
                             .padding(.leading, 15)
                             .padding(.horizontal)
                             .frame(minHeight: 50)
+
+                        // Display selected image
+                        if let selectedImage {
+                            selectedImage
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                                .padding(.top, 10)
+                        }
 
                         Spacer()
                     }
@@ -129,10 +111,12 @@ struct SelectDateView: View {
                         .padding(10)
                 }
             }
-            
+
+            // Buttons
             HStack {
                 Button(action: {
-                    //action
+                    // Trigger photo selection
+                    isImagePickerPresented = true
                 }) {
                     ZStack {
                         Circle()
@@ -145,55 +129,9 @@ struct SelectDateView: View {
                     }
                 }
                 .padding(.horizontal, 5)
-
-                Button(action: {
-                    //action
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 65, height: 65)
-
-                        Text("🎥")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                    }
-                }
-                .padding(.horizontal, 5)
-
-                Button(action: {
-                    //action
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 65, height: 65)
-
-                        Text("🎤")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                    }
-                }
-                .padding(.horizontal, 5)
-
-                Button(action: {
-                    //action
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 65, height: 65)
-
-                        Text("🎧")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                    }
-                }
-                .padding(.horizontal, 5)
             }
-            
+
             HStack {
-                
                 Button(action: {
                     //action
                 }) {
@@ -208,7 +146,7 @@ struct SelectDateView: View {
                     }
                     .padding(.leading, 20)
                 }
-                
+
                 NavigationLink(destination: ContentView()) {
                     Text("Next")
                         .fontWeight(.semibold)
@@ -220,16 +158,13 @@ struct SelectDateView: View {
                         .cornerRadius(40)
                         .padding(.horizontal, 40)
                 }
-
             }
             .padding(.top, 20)
-
         }
     }
 
     @State private var numberOfRectangles = 1
     @State private var currentIndex = 0
-
     @State private var titles: [String] = Array(repeating: "", count: 10)
     @State private var messages: [String] = Array(repeating: "", count: 10)
 
@@ -240,53 +175,6 @@ struct SelectDateView: View {
             messages.append("")
         }
     }
-
-    
-    @ViewBuilder
-    func bottomNavigationBar() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .edgesIgnoringSafeArea(.bottom)
-            
-            HStack {
-                Spacer()
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "house")
-                        .font(.system(size: 30))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "plus.circle")
-                        .font(.system(size: 35))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "person.crop.circle")
-                        .font(.system(size: 35))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer()
-            }
-            
-            .padding(.bottom, 15)
-        }
-    }
-    
-    
-       
-    
 }
 
 #Preview {
