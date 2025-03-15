@@ -14,28 +14,36 @@ struct SelectACapsuleView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    orderHeader()
+                    //orderHeader()
+                    NavigationLink(destination: ContentView()) {
+                        Image(systemName: "x.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.white)
+                            .padding(.leading, 290)
+                            .padding(.top, 15)
+                    }
                     
                     Text("Select your time capsule")
                         .fontWeight(.semibold)
                         .font(.system(size: 40))
                         .foregroundColor(Color("F6C7CD"))
-                        .padding(.top, 60)
+                        .padding(.top, 70)
                         .padding(.bottom, -50)
                         .multilineTextAlignment(.center)
                     
                     
-                    Spacer()
                     TabView {
                         ForEach(images, id: \.self) { image in
                             Image(image)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 250)
+                                .frame(height: 350)
                         }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                    .frame(height: 250)
+                    .frame(height: 400)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     
                     NavigationLink(destination: BuryCapsuleView(selectedImage: selectedImage ?? "Clock"), isActive: $navigateToNextPage) {
@@ -49,10 +57,9 @@ struct SelectACapsuleView: View {
                             .cornerRadius(40)
                             .padding(.horizontal, 100)
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 60)
                     
-                    Spacer()
-                    bottomNavigationBar()
+                    //bottomNavigationBar()
                 }
             }
         }

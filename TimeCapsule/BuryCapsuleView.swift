@@ -19,35 +19,37 @@ struct BuryCapsuleView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    orderHeader()
+                    //orderHeader()
                     
                     HStack {
                         Spacer()
-                        Image(systemName: "x.circle")
-                            .font(.system(size: 40))
-                            .foregroundColor(.black)
-                            .padding()
+                        NavigationLink(destination: ContentView()) {
+                            Image(systemName: "x.circle")
+                                .font(.system(size: 50))
+                                .foregroundColor(.white)
+                                .padding()
+                                .padding(.top, 15)
+                        }
+
                     }
                     
                     Text("Your capsule has been buried!")
                         .fontWeight(.semibold)
                         .font(.system(size: 40))
                         .foregroundColor(Color("F6C7CD"))
-                        .padding(.top, 60)
-                        .padding(.bottom, -50)
+                        .padding(.top, 65)
                         .multilineTextAlignment(.center)
-                    
-                    Spacer()
                     
                     // Display the selected image
                     Image(selectedImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 300)
+                        .frame(height: 400)
+                        .padding(.top, -15)
                         .padding()
                     
                     Spacer()
-                    bottomNavigationBar()
+                    //bottomNavigationBar()
                 }
             }
         }
