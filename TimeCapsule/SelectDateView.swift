@@ -1,5 +1,5 @@
 //
-//  NoteView.swift
+//  SelectDateView.swift
 //  TimeCapsule
 //
 //  Created by Shahira Jasmine on 15/3/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoteView: View {
+struct SelectDateView: View {
     var body: some View {
             NavigationStack {
                 ZStack {
@@ -60,7 +60,7 @@ struct NoteView: View {
     @ViewBuilder
     func content() -> some View {
         VStack {
-            Text("What will be in your capsule?")
+            Text("Select a date for future you to open")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
@@ -69,7 +69,7 @@ struct NoteView: View {
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
-                .tracking(1)
+                .tracking(0.7)
             
             TabView(selection: $currentIndex) {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
@@ -288,7 +288,5 @@ struct NoteView: View {
 }
 
 #Preview {
-    NoteView()
+    SelectDateView()
 }
-
-
