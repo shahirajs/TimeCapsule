@@ -77,8 +77,8 @@ struct SelectDateView: View {
                         if let selectedImage = selectedImages[index] {
                             selectedImage
                                 .resizable()
-                                .scaledToFit()
-                                .frame(height: 150)
+                                .scaledToFit() // Make sure the image scales proportionally
+                                .frame(width: min(UIScreen.main.bounds.width - 40, 300)) // Limit the width to prevent overflowing
                                 .cornerRadius(10)
                                 .padding(.top, 10)
                         }
@@ -177,6 +177,7 @@ struct SelectDateView: View {
             }
         }
     }
+
     
     func loadMoreContent() {
         if numberOfRectangles < 10 {
