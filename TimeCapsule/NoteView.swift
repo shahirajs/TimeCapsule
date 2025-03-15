@@ -5,6 +5,8 @@ struct NoteView: View {
     @State private var isDatePickerVisible: Bool = false
     @State private var selectedDate: Date? = nil // Date the user selects
     
+    @AppStorage("selectedImage") private var selectedImage: String = "Clock"  // Retrieve the selected image
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -14,18 +16,15 @@ struct NoteView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    //orderHeader()
                     ScrollView {
                         content()
                             .padding(.top, 20)
                     }
                     Spacer()
-                    //bottomNavigationBar()
                 }
                 
                 if isDatePickerVisible { // If the DatePicker is visible
                     VStack {
-                        
                         DatePicker("Select A Date", selection: $chosenDate, displayedComponents: .date)
                             .datePickerStyle(GraphicalDatePickerStyle())
                             .padding()
@@ -45,7 +44,6 @@ struct NoteView: View {
                                 .cornerRadius(10)
                                 .foregroundColor(.white)
                         }
-                        
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 400)
@@ -56,32 +54,11 @@ struct NoteView: View {
                     .animation(.spring(), value: isDatePickerVisible)
                 }
             }
+            .onAppear {
+                // Refresh the image whenever the view appears
+                selectedImage = UserDefaults.standard.string(forKey: "selectedImage") ?? "Clock"
+            }
         }
-    }
-    
-    @ViewBuilder
-    func orderHeader() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 150)
-                .edgesIgnoringSafeArea(.top)
-            
-            Text("Lockit")
-                .fontWeight(.semibold)
-                .font(.system(size: 25))
-                .foregroundStyle(.white)
-                .padding(.bottom, 40)
-                .font(.custom("American Typewriter", size: 28))
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .foregroundColor(.white)
-                .padding(.top, 35)
-                .padding(.leading, 290)
-        }
-        .frame(height: 100)
     }
     
     @ViewBuilder
@@ -106,6 +83,13 @@ struct NoteView: View {
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
                 .tracking(1)
+            
+            // Display the image that was selected
+            Image(selectedImage) // Use the image name stored in AppStorage
+                .resizable()
+                .scaledToFit()
+                .frame(height: 350)
+                .padding(.top, -10)
             
             Button(action: {
                 withAnimation {
@@ -149,51 +133,9 @@ struct NoteView: View {
                     .background(Color("textColor2"))
                     .cornerRadius(40)
                     .padding(.horizontal, 40)
-                    .padding(.top, 350)
                     .tracking(0.7)
             }
-            .padding(.top, 20)
-        }
-    }
-    
-    @ViewBuilder
-    func bottomNavigationBar() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .edgesIgnoringSafeArea(.bottom)
-            
-            HStack {
-                Spacer()
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "house")
-                        .font(.system(size: 30))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "plus.circle")
-                        .font(.system(size: 35))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                    Image(systemName: "person.crop.circle")
-                        .font(.system(size: 35))
-                        .foregroundStyle(.white)
-                }
-                
-                Spacer()
-            }
-            .padding(.bottom, 15)
+            .padding(.top, 5)
         }
     }
     
