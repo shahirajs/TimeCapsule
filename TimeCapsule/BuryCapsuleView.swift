@@ -11,7 +11,6 @@ struct BuryCapsuleView: View {
     let selectedImage: String // Store the selected image
     
     var body: some View {
-        NavigationStack {
             ZStack {
                 Image("pinkngreen")
                     .resizable()
@@ -50,7 +49,7 @@ struct BuryCapsuleView: View {
                     bottomNavigationBar()
                 }
             }
-        }
+        
     }
     
     @ViewBuilder
