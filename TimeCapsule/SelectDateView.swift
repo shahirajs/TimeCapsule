@@ -51,7 +51,7 @@ struct SelectDateView: View {
                     .padding(.top, 15)
             }
 
-            Text("What will be in your lockit?")
+            Text("What will be in your LockIt?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))

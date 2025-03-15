@@ -70,8 +70,7 @@ struct NoteView: View {
                 .fontWeight(.semibold)
                 .font(.system(size: 25))
                 .foregroundStyle(.white)
-                .padding(.top, 45)
-                .padding(.bottom, 10)
+                .padding(.bottom, 40)
                 .font(.custom("American Typewriter", size: 28))
             
             Image(systemName: "person.circle.fill")
