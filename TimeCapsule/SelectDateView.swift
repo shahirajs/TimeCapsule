@@ -2,9 +2,14 @@ import SwiftUI
 import PhotosUI
 
 struct SelectDateView: View {
-    @State private var isImagePickerPresented = false
-    @State private var selectedImage: Image? = nil
-
+    @State private var numberOfRectangles = 1
+    @State private var currentIndex = 0
+    @State private var titles: [String] = Array(repeating: "", count: 10)
+    @State private var messages: [String] = Array(repeating: "", count: 10)
+    @State private var selectedImages: [Image?] = Array(repeating: nil, count: 10) // Array for selected images
+    @State private var selectedItem: PhotosPickerItem? = nil // Declare selectedItem
+    @State private var isPhotoPickerPresented = false // State to control the display of the photo picker
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -12,7 +17,7 @@ struct SelectDateView: View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-
+                
                 VStack {
                     ScrollView {
                         content()
@@ -20,9 +25,6 @@ struct SelectDateView: View {
                     }
                     Spacer()
                 }
-            }
-            .sheet(isPresented: $isImagePickerPresented) {
-                SelectImageView(selectedImage: $selectedImage)
             }
         }
     }
@@ -38,7 +40,7 @@ struct SelectDateView: View {
                     .foregroundColor(.white)
                     .padding(.leading, 290)
             }
-
+            
             Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
@@ -49,8 +51,7 @@ struct SelectDateView: View {
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
                 .tracking(0.7)
-
-            // Swipeable rectangles
+            
             TabView(selection: $currentIndex) {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
                     VStack {
@@ -61,7 +62,7 @@ struct SelectDateView: View {
                             .padding()
                             .cornerRadius(10)
                             .padding(.horizontal)
-
+                        
                         TextField("Write a message...", text: $messages[index])
                             .font(.system(size: 20))
                             .foregroundColor(Color("textColor1"))
@@ -71,17 +72,17 @@ struct SelectDateView: View {
                             .padding(.leading, 15)
                             .padding(.horizontal)
                             .frame(minHeight: 50)
-
-                        // Display selected image
-                        if let selectedImage {
+                        
+                        // Display image if available
+                        if let selectedImage = selectedImages[index] {
                             selectedImage
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 100, height: 100)
-                                .clipShape(Circle())
+                                .frame(height: 150)
+                                .cornerRadius(10)
                                 .padding(.top, 10)
                         }
-
+                        
                         Spacer()
                     }
                     .frame(width: 340, height: 340)
@@ -111,12 +112,11 @@ struct SelectDateView: View {
                         .padding(10)
                 }
             }
-
-            // Buttons
+            
+            // Camera Button (Updated)
             HStack {
                 Button(action: {
-                    // Trigger photo selection
-                    isImagePickerPresented = true
+                    isPhotoPickerPresented = true // Trigger the photo picker to show
                 }) {
                     ZStack {
                         Circle()
@@ -129,8 +129,10 @@ struct SelectDateView: View {
                     }
                 }
                 .padding(.horizontal, 5)
-            }
 
+                // Other buttons here...
+            }
+            
             HStack {
                 Button(action: {
                     //action
@@ -146,7 +148,7 @@ struct SelectDateView: View {
                     }
                     .padding(.leading, 20)
                 }
-
+                
                 NavigationLink(destination: ContentView()) {
                     Text("Next")
                         .fontWeight(.semibold)
@@ -158,21 +160,30 @@ struct SelectDateView: View {
                         .cornerRadius(40)
                         .padding(.horizontal, 40)
                 }
+
             }
             .padding(.top, 20)
         }
+        .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedItem, matching: .images, photoLibrary: .shared()) // Display photo picker
+        .onChange(of: selectedItem) { newItem in
+            Task {
+                if let newItem {
+                    if let data = try? await newItem.loadTransferable(type: Data.self) {
+                        if let uiImage = UIImage(data: data) {
+                            selectedImages[currentIndex] = Image(uiImage: uiImage) // Store selected image for the current index
+                        }
+                    }
+                }
+            }
+        }
     }
-
-    @State private var numberOfRectangles = 1
-    @State private var currentIndex = 0
-    @State private var titles: [String] = Array(repeating: "", count: 10)
-    @State private var messages: [String] = Array(repeating: "", count: 10)
-
+    
     func loadMoreContent() {
         if numberOfRectangles < 10 {
             numberOfRectangles += 1
             titles.append("")
             messages.append("")
+            selectedImages.append(nil) // Add placeholder for new image
         }
     }
 }
