@@ -61,14 +61,14 @@ struct OpenLockIt: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.white)
                     .padding(.leading, 290)
+                    .padding(.top, 15)
             }
             
             Text("A memory from \(getFormattedDate())")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor2"))
-                .padding(.top, 75)
-                .padding(.bottom, 10)
+                .padding(.top, 60)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
                 .padding(.leading, 20)

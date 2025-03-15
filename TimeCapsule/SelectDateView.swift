@@ -48,14 +48,14 @@ struct SelectDateView: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.white)
                     .padding(.leading, 290)
-                    .padding(.top, 10)
+                    .padding(.top, 15)
             }
 
             Text("What will be in your lockit?")
                 .fontWeight(.bold)
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
-                .padding(.top, 35)
+                .padding(.top, 30)
                 .padding(.bottom, 10)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)

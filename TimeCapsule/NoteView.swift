@@ -95,6 +95,7 @@ struct NoteView: View {
                     .frame(width: 50, height: 50)
                     .foregroundColor(.white)
                     .padding(.leading, 290)
+                    .padding(.top, 15)
             }
             
             Text("Select a date for future you to open ")
@@ -102,7 +103,6 @@ struct NoteView: View {
                 .font(.system(size: 35))
                 .foregroundColor(Color("textColor1"))
                 .padding(.top, 60)
-                .padding(.bottom, 10)
                 .multilineTextAlignment(.center)
                 .padding(.trailing, 20)
                 .padding(.leading, 20)
