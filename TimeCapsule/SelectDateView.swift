@@ -55,37 +55,40 @@ struct SelectDateView: View {
             TabView(selection: $currentIndex) {
                 ForEach(0..<numberOfRectangles, id: \.self) { index in
                     VStack {
-                        TextField("Add a title...", text: $titles[index])
-                            .foregroundColor(Color("textColor1"))
-                            .accentColor(Color("textColor1"))
-                            .font(.system(size: 30))
-                            .padding()
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                        
-                        TextField("Write a message...", text: $messages[index])
-                            .font(.system(size: 20))
-                            .foregroundColor(Color("textColor1"))
-                            .accentColor(Color("textColor1"))
-                            .background(Color.white.opacity(0.7))
-                            .padding(.top, -25)
-                            .padding(.leading, 15)
-                            .padding(.horizontal)
-                            .frame(minHeight: 50)
+                        // Only show the TextFields if there's no selected image
+                        if selectedImages[index] == nil {
+                            TextField("Add a title...", text: $titles[index])
+                                .foregroundColor(Color("textColor1"))
+                                .accentColor(Color("textColor1"))
+                                .font(.system(size: 30))
+                                .padding()
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                            
+                            TextField("Write a message...", text: $messages[index])
+                                .font(.system(size: 20))
+                                .foregroundColor(Color("textColor1"))
+                                .accentColor(Color("textColor1"))
+                                .background(Color.white.opacity(0.7))
+                                .padding(.top, -25)
+                                .padding(.leading, 15)
+                                .padding(.horizontal)
+                                .frame(minHeight: 50)
+                        }
                         
                         // Display image if available
                         if let selectedImage = selectedImages[index] {
                             selectedImage
                                 .resizable()
-                                .scaledToFit() // Make sure the image scales proportionally
-                                .frame(width: min(UIScreen.main.bounds.width - 40, 300)) // Limit the width to prevent overflowing
+                                .scaledToFit() // This makes the image scale proportionally without distortion
+                                .frame(width: UIScreen.main.bounds.width - 60, height: 350) // Adjust size to match rectangle
                                 .cornerRadius(10)
                                 .padding(.top, 10)
                         }
                         
                         Spacer()
                     }
-                    .frame(width: 340, height: 340)
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 340) // Ensure the frame size is consistent
                     .foregroundStyle(.white)
                     .background(Color.white)
                     .cornerRadius(25)
