@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SelectACapsuleView: View {
-    let images: [String] = ["Clock", "Camera", "Lock", "Rocket"]
+    let images: [String] = ["Clock", "Camera", "Lock", "Rocket", "Plant"]
     @State private var selectedImage: String? = nil
     @State private var navigateToNextPage = false
     

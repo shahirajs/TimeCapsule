@@ -18,41 +18,46 @@ struct NoteView: View {
                 
                 VStack {
                     orderHeader()
+                    Spacer()
                     
                     
                     Text("You have a capsule to open!")
                         .fontWeight(.semibold)
-                        .font(.system(size: 40))
-                        .foregroundColor(Color("F6C7CD"))
-                        .padding(.top, 60)
-                        .padding(.bottom, 10)
+                        .font(.system(size: 38))
+                        .foregroundColor(Color("FFEFD0"))
                         .multilineTextAlignment(.center)
-                    
-                    Spacer()
-                    
-                    // Display the selected image
+                
                     Image("Rocket")
                         .resizable()
                         .scaledToFit()
                         .frame(height: 300)
+                    
+                    Text("00:00:00")
+                        .fontWeight(.semibold)
+                        .font(.system(size: 35))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                         .padding()
                     
-                    Spacer()
+                    Text("A capsule from 12th January 2009....")
+                        .fontWeight(.semibold)
+                        .font(.system(size: 17.5))
+                        .foregroundColor(Color("37357E"))
+                        .multilineTextAlignment(.center)
                     
                     NavigationLink(destination: ContentView()) {
                         Text("Open")
                             .fontWeight(.semibold)
                             .font(.system(size: 30))
                             .foregroundColor(Color("736ECC"))
-                            .padding()
+                            .padding(10)
                             .frame(maxWidth: .infinity)
-                            .background(Color("F6C7CD")) // Pink background color from the asset catalog
-                            .cornerRadius(40) // Rounded corners
+                            .background(Color("1BFEFD"))
+                            .cornerRadius(40)
                             .padding(.horizontal, 100)
                     }
-                    .padding(.bottom, 40)
-                    
                     Spacer()
+                    
                     bottomNavigationBar()
                 }
             }
