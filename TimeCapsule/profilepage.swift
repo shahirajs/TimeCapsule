@@ -68,21 +68,22 @@ struct profilepage: View {
             Color.accentColor
                 .frame(maxWidth: .infinity, maxHeight: 150)
                 .edgesIgnoringSafeArea(.top)
-
-            Text("lockit")
+            
+            Text("LockIt")
                 .fontWeight(.semibold)
                 .font(.system(size: 25))
                 .foregroundStyle(.white)
                 .padding(.top, 45)
                 .padding(.bottom, 10)
                 .font(.custom("American Typewriter", size: 28))
-
+            
             Image(systemName: "person.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 40, height: 40)
                 .foregroundColor(.white)
-                .position(x: UIScreen.main.bounds.width - 50, y: 40)
+                .padding(.top, 35)
+                .padding(.leading, 290)
         }
         .frame(height: 100)
     }
@@ -94,32 +95,35 @@ struct profilepage: View {
             Color.accentColor
                 .frame(maxWidth: .infinity, maxHeight: 100)
                 .edgesIgnoringSafeArea(.bottom)
-
+            
             HStack {
                 Spacer()
-
-                NavigationLink(destination: profilepage()) {
+                
+                NavigationLink(destination: ContentView()
+                    .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "house")
                         .font(.system(size: 30))
                         .foregroundStyle(.white)
                 }
-
+                
                 Spacer(minLength: 90)
-
-                NavigationLink(destination: profilepage()) {
+                
+                NavigationLink(destination: ContentView()
+                    .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "plus.circle")
                         .font(.system(size: 35))
                         .foregroundStyle(.white)
                 }
-
+                
                 Spacer(minLength: 90)
-
-                NavigationLink(destination: profilepage()) {
+                
+                NavigationLink(destination: ContentView()
+                    .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "person.crop.circle")
                         .font(.system(size: 35))
                         .foregroundStyle(.white)
                 }
-
+                
                 Spacer()
             }
             .padding(.bottom, 15)
@@ -163,14 +167,14 @@ struct profilepage: View {
     }
 
     var capsuleGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) { // Reduce spacing to 10
             ForEach(capsules, id: \.image) { capsule in
                 Button(action: { checkCapsuleUnlock(capsule: capsule) }) {
                     VStack {
                         Image(capsule.image)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 120, height: 120)
+                            .frame(width: 150, height: 150) // Larger image size
 
                         Text(timeRemaining(capsule.unlockTime))
                             .font(.headline)
@@ -181,6 +185,8 @@ struct profilepage: View {
         }
         .padding()
     }
+
+
 
     // MARK: - Capsule Unlock Logic
     func checkCapsuleUnlock(capsule: CapsuleItem) {
@@ -208,7 +214,6 @@ struct profilepage: View {
     }
 }
 
-// ✅ FIX 3: Prevent circular reference in Preview
 #Preview {
     profilepage()
 }

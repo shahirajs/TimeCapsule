@@ -26,7 +26,7 @@ struct BuryCapsuleView: View {
 
                     }
                     
-                    Text("Your capsule has been buried!")
+                    Text("Your LockIt has been buried!")
                         .fontWeight(.semibold)
                         .font(.system(size: 40))
                         .foregroundColor(Color("F6C7CD"))
@@ -117,6 +117,6 @@ struct BuryCapsuleView: View {
 }
 
 #Preview {
-    BuryCapsuleView(selectedImage: "Clock")
+    BuryCapsuleView(selectedImage: "Rocket")
 }
 
