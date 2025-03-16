@@ -108,7 +108,7 @@ struct profilepage: View {
                 
                 Spacer(minLength: 90)
                 
-                NavigationLink(destination: ContentView()
+                NavigationLink(destination: SelectACapsuleView()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "plus.circle")
                         .font(.system(size: 35))
@@ -117,7 +117,7 @@ struct profilepage: View {
                 
                 Spacer(minLength: 90)
                 
-                NavigationLink(destination: ContentView()
+                NavigationLink(destination: profilepage()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "person.crop.circle")
                         .font(.system(size: 35))
