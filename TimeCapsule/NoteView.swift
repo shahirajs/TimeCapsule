@@ -19,6 +19,8 @@ struct NoteView: View {
     @State private var songName: String = ""  // Added to store the song name
     @State private var isPopupPresented: Bool = false // To track popup visibility
     @State private var songNames: [String] = Array(repeating: "", count: 10) // Store song names for each index
+    @State private var isUsernamePopupPresented: Bool = false // To track username popup visibility
+    @State private var username: String = "" // To store the entered username
     
     var body: some View {
         NavigationStack {
@@ -112,6 +114,25 @@ struct NoteView: View {
                                 }
                             }
                         }
+                        
+                        // Only show title and message text fields if no media is added
+                        if selectedImages[index] == nil && audioURLs[index] == nil && songNames[index].isEmpty {
+                            VStack {
+                                TextField("Add Title...", text: $titles[index])
+                                    .padding()
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding(.horizontal)
+                                    .font(.system(size: 30))
+
+                                TextField("Add a message...", text: $messages[index])
+                                    .padding()
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding(.horizontal)
+                                    .padding(.top, -15)
+                            }
+                            .padding(.top, 10)
+                        }
+
                         Spacer()
                     }
                     .frame(width: UIScreen.main.bounds.width - 40, height: 340)
@@ -195,19 +216,19 @@ struct NoteView: View {
 
             HStack {
                 Button(action: {
-                    //action
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(.accent)
-                            .frame(width: 70, height: 70)
+                        isUsernamePopupPresented = true // Show the username input popup
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(.accent)
+                                .frame(width: 70, height: 70)
 
-                        Image(systemName: "person.badge.plus")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
+                            Image(systemName: "person.badge.plus")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.leading, 20)
                     }
-                    .padding(.leading, 20)
-                }
 
                 NavigationLink(destination: ContentView()) {
                     Text("Next")
@@ -222,6 +243,34 @@ struct NoteView: View {
                 }
             }
             .padding(.top, 20)
+            
+            .sheet(isPresented: $isUsernamePopupPresented) {
+                VStack {
+                    Text("Enter Username")
+                        .font(.headline)
+                        .padding()
+
+                    TextField("Username", text: $username)
+                        .padding()
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.horizontal)
+
+                    HStack {
+                        Button("Save") {
+                            // Handle saving the username
+                            print("Username saved: \(username)")
+                            isUsernamePopupPresented = false
+                        }
+                        .padding()
+
+                        Button("Cancel") {
+                            isUsernamePopupPresented = false
+                        }
+                        .padding()
+                    }
+                }
+                .padding()
+                }
         }
         .photosPicker(isPresented: $isPhotoPickerPresented, selection: $selectedItem, matching: .images, photoLibrary: .shared())
         .onChange(of: selectedItem) { newItem in
