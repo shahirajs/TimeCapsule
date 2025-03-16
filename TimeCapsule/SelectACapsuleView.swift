@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SelectACapsuleView: View {
     let images: [String] = ["Clock", "Camera", "Lock", "Rocket"]
-    @State private var selectedImage: String? = nil
+    @State private var selectedImage: String = "Clock" // Default to the first image
     @State private var navigateToNextPage = false
     
     var body: some View {
@@ -14,7 +14,6 @@ struct SelectACapsuleView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    //orderHeader()
                     NavigationLink(destination: ContentView()) {
                         Image(systemName: "x.circle")
                             .resizable()
@@ -33,20 +32,20 @@ struct SelectACapsuleView: View {
                         .padding(.bottom, -50)
                         .multilineTextAlignment(.center)
                     
-                    
-                    TabView {
+                    TabView(selection: $selectedImage) {
                         ForEach(images, id: \.self) { image in
                             Image(image)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 350)
+                                .tag(image) // Tag each image with its name
                         }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
                     .frame(height: 400)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     
-                    NavigationLink(destination: BuryCapsuleView(selectedImage: selectedImage ?? "Clock"), isActive: $navigateToNextPage) {
+                    NavigationLink(destination: BuryCapsuleView(selectedImage: selectedImage), isActive: $navigateToNextPage) {
                         Text("Next")
                             .fontWeight(.semibold)
                             .font(.system(size: 30))
@@ -58,12 +57,12 @@ struct SelectACapsuleView: View {
                             .padding(.horizontal, 100)
                     }
                     .padding(.bottom, 60)
-                    
-                    //bottomNavigationBar()
                 }
             }
         }
     }
+}
+
     
     @ViewBuilder
     func orderHeader() -> some View {
@@ -133,7 +132,6 @@ struct SelectACapsuleView: View {
         }
         
     }
-}
 
 #Preview {
     SelectACapsuleView()
