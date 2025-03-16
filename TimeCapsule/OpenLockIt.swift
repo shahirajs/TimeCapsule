@@ -7,7 +7,7 @@ struct OpenLockIt: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("Pink")
+                Image("pin")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -73,90 +73,7 @@ struct OpenLockIt: View {
                 .padding(.horizontal, 20)
                 .tracking(1)
 
-            // 2x2 Grid Layout
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
-                // First: More rounded rectangle
-                VStack {
-                    Text("Memory 1")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
-                        .foregroundColor(Color("textColor2"))
-                        .padding(.top, 10)
 
-                    Text("Some placeholder text for memory 1.")
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                }
-                .frame(width: (UIScreen.main.bounds.width / 2) - 30, height: 180)
-                .background(Color("textColor2"))
-                .clipShape(RoundedRectangle(cornerRadius: 30)) // More rounded shape
-                .shadow(radius: 5)
-
-                // Second: 4-leaf clover
-                VStack {
-                    Image(systemName: "suit.club.fill") // 4-leaf clover icon
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.green)
-                        .padding(.top, 10)
-
-                    Text("Memory 2")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
-                        .foregroundColor(Color("textColor2"))
-
-                    Text("Some placeholder text for memory 2.")
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                }
-                .frame(width: (UIScreen.main.bounds.width / 2) - 30, height: 180)
-                .background(Color("color1"))
-                .clipShape(RoundedRectangle(cornerRadius: 10)) // Keeping a mild rounded look
-                .shadow(radius: 5)
-
-                // Third: Normal Rectangle (unchanged)
-                VStack {
-                    Text("Memory 3")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
-                        .foregroundColor(Color("textColor2"))
-                        .padding(.top, 10)
-
-                    Text("Some placeholder text for memory 3.")
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                }
-                .frame(width: (UIScreen.main.bounds.width / 2) - 30, height: 180)
-                .background(Color("color2"))
-                .cornerRadius(20)
-                .shadow(radius: 5)
-
-                // Fourth: Circle Shape
-                VStack {
-                    Text("Memory 4")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
-                        .foregroundColor(Color("textColor2"))
-                        .padding(.top, 10)
-
-                    Text("Some placeholder text for memory 4.")
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 10)
-                }
-                .frame(width: 180, height: 180) // Adjusting for a circular shape
-                .background(Color("textColor2"))
-                .clipShape(Circle()) // Making it a circle
-                .shadow(radius: 5)
-            }
             .padding(.top, 20)
         }
         .padding(.horizontal, 20)
