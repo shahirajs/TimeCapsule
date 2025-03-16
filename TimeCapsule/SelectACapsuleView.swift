@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SelectACapsuleView: View {
     let images: [String] = ["Clock", "Camera", "Lock", "Rocket"]
-    @State private var selectedImage: String = "Clock" // Default to the first image
+    @State private var selectedImage: String = "Clock" // Default selection
     @State private var navigateToNextPage = false
     
     var body: some View {
@@ -45,7 +45,8 @@ struct SelectACapsuleView: View {
                     .frame(height: 400)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     
-                    NavigationLink(destination: BuryCapsuleView(selectedImage: selectedImage), isActive: $navigateToNextPage) {
+                    // Updated NavigationLink to navigate to NoteView
+                    NavigationLink(destination: NoteView().navigationBarBackButtonHidden(true), isActive: $navigateToNextPage) {
                         Text("Next")
                             .fontWeight(.semibold)
                             .font(.system(size: 30))
@@ -57,81 +58,12 @@ struct SelectACapsuleView: View {
                             .padding(.horizontal, 100)
                     }
                     .padding(.bottom, 60)
+
                 }
             }
         }
     }
 }
-
-    
-    @ViewBuilder
-    func orderHeader() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 150)
-                .edgesIgnoringSafeArea(.top)
-            
-            Text("Lockit")
-                .fontWeight(.semibold)
-                .font(.system(size: 25))
-                .foregroundStyle(.white)
-                .padding(.top, 45)
-                .padding(.bottom, 10)
-                .font(.custom("American Typewriter", size: 28))
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .foregroundColor(.white)
-                .padding(.top, 35)
-                .padding(.leading, 290)
-        }
-        .frame(height: 100)
-    }
-    
-    @ViewBuilder
-    func bottomNavigationBar() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .edgesIgnoringSafeArea(.bottom)
-            
-            
-            HStack {
-                Spacer()
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "house")
-                            .font(.system(size: 30))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 35))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "person.crop.circle")
-                            .font(.system(size: 35))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer()
-            }
-            .padding(.bottom, 15)
-        }
-        
-    }
 
 #Preview {
     SelectACapsuleView()

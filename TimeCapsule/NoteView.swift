@@ -21,6 +21,7 @@ struct NoteView: View {
     @State private var songNames: [String] = Array(repeating: "", count: 10) // Store song names for each index
     @State private var isUsernamePopupPresented: Bool = false // To track username popup visibility
     @State private var username: String = "" // To store the entered username
+    @State private var navigateToNextPage = false
     
     var body: some View {
         NavigationStack {
@@ -230,7 +231,7 @@ struct NoteView: View {
                         .padding(.leading, 20)
                     }
 
-                NavigationLink(destination: ContentView()) {
+                NavigationLink(destination: SelectDateView().navigationBarBackButtonHidden(true), isActive: $navigateToNextPage) {
                     Text("Next")
                         .fontWeight(.semibold)
                         .font(.system(size: 30))

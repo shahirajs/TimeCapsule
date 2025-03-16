@@ -23,13 +23,6 @@ struct BuryCapsuleView: View {
                     
                     HStack {
                         Spacer()
-                        NavigationLink(destination: ContentView()) {
-                            Image(systemName: "x.circle")
-                                .font(.system(size: 50))
-                                .foregroundColor(.white)
-                                .padding()
-                                .padding(.top, 15)
-                        }
 
                     }
                     
@@ -37,7 +30,7 @@ struct BuryCapsuleView: View {
                         .fontWeight(.semibold)
                         .font(.system(size: 40))
                         .foregroundColor(Color("F6C7CD"))
-                        .padding(.top, 65)
+                        .padding(.top, 200)
                         .multilineTextAlignment(.center)
                     
                     // Display the selected image
