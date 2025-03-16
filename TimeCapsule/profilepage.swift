@@ -72,7 +72,6 @@ struct profilepage: View {
                 .padding(.top, 45)
                 .padding(.bottom, 10)
                 .font(.custom("American Typewriter", size: 28))
-
         }
         .frame(height: 100)
     }
@@ -87,7 +86,7 @@ struct profilepage: View {
             HStack {
                 Spacer()
 
-                NavigationLink(destination: ContentView()
+                NavigationLink(destination: Homepage1View()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "house")
                         .font(.system(size: 30))
@@ -211,6 +210,7 @@ struct SignUpView: View {
             // Add your sign-up form elements here
             Text("Add your sign-up form here.")
         }
+        .navigationBarBackButtonHidden(true) // Hide the back button on the SignUpView
         .navigationBarTitle("Sign Up", displayMode: .inline)
     }
 }
