@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoteView: View {
+struct HomepageView: View {
     var body: some View {
         NavigationStack {
             ZStack {
@@ -26,11 +26,21 @@ struct NoteView: View {
                         .font(.system(size: 38))
                         .foregroundColor(Color("FFEFD0"))
                         .multilineTextAlignment(.center)
-                
-                    Image("Rocket")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 300)
+                    HStack {
+                        Spacer()
+                        Image("Rocket")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 300)
+                        NavigationLink(destination: Homepage2View()) {
+                            HStack {
+                                Image(systemName: "arrow.right")
+                                    .font(.title2)
+                                    .foregroundColor(.blue)
+                            }
+                            .padding()
+                        }
+                    }
                     
                     Text("00:00:00")
                         .fontWeight(.semibold)
@@ -140,5 +150,5 @@ struct NoteView: View {
 }
 
 #Preview {
-    NoteView()
+    HomepageView()
 }

@@ -31,10 +31,22 @@ struct Homepage2View: View {
                         .foregroundColor(Color("FFEFD0"))
                         .multilineTextAlignment(.center)
                 
-                    Image("Plant")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 300)
+                    HStack {
+                        NavigationLink(destination: HomepageView()) {
+                            HStack {
+                                Image(systemName: "arrow.left")
+                                    .font(.title2)
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        Image("Plant")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 300)
+                        //Spacer()
+                        
+                        
+                    }
                     
                         .onAppear {
                             startTimer()
