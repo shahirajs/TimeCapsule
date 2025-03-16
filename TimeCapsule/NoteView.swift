@@ -3,6 +3,7 @@ import PhotosUI
 import AVFoundation
 
 struct HomepageView: View {
+    @State private var navigateToNextPage = false
     
     @State private var numberOfRectangles = 1
     @State private var currentIndex = 0
@@ -21,7 +22,6 @@ struct HomepageView: View {
     @State private var songNames: [String] = Array(repeating: "", count: 10) // Store song names for each index
     @State private var isUsernamePopupPresented: Bool = false // To track username popup visibility
     @State private var username: String = "" // To store the entered username
-    @State private var navigateToNextPage = false
     
     var body: some View {
         NavigationStack {
@@ -39,13 +39,14 @@ struct HomepageView: View {
                     Spacer()
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 
     @ViewBuilder
     func content() -> some View {
         VStack {
-            NavigationLink(destination: ContentView()) {
+            NavigationLink(destination: Homepage1View()) {
                 Image(systemName: "x.circle")
                     .resizable()
                     .scaledToFit()

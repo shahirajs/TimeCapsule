@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct OpenLockIt: View {
+    @State private var navigateToNextPage = false
     @State private var chosenDate: Date = Date() // Initial date set to current date
     @State private var selectedDate: Date? = nil // Date the user selects
     
@@ -22,6 +23,7 @@ struct OpenLockIt: View {
                     //bottomNavigationBar()
                 }
             }
+            .navigationBarBackButtonHidden(true) // Hide the back button for this view
         }
     }
     
@@ -54,7 +56,7 @@ struct OpenLockIt: View {
     @ViewBuilder
     func content() -> some View {
         VStack {
-            NavigationLink(destination: ContentView()) {
+            NavigationLink(destination: Homepage1View()) {
                 Image(systemName: "x.circle")
                     .resizable()
                     .scaledToFit()
@@ -73,12 +75,10 @@ struct OpenLockIt: View {
                 .padding(.horizontal, 20)
                 .tracking(1)
 
-
             .padding(.top, 20)
         }
         .padding(.horizontal, 20)
     }
-
 
     
     @ViewBuilder

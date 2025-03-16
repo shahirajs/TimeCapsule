@@ -5,17 +5,10 @@
 //  Created by Vincent Anter on 15/3/2025.
 //
 
-//
-//  NoteView.swift
-//  TimeCapsule
-//
-//  Created by Shahira Jasmine on 15/3/2025.
-//
-
 import SwiftUI
 
-
 struct CapsuleItem {
+    @State private var navigateToNextPage = false
     let image: String
     let unlockTime: Date
 }
@@ -33,18 +26,21 @@ struct profilepage: View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all) //
-                
+
                 VStack {
                     orderHeader()
 
-                    
-                    Image("aiman")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 3))
-                        .padding(.top, 10)
+                    // Profile image wrapped in a NavigationLink
+                    NavigationLink(destination: signup()
+                        .navigationBarBackButtonHidden(true)) {
+                        Image("aiman")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 120)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white, lineWidth: 3))
+                            .padding(.top, 10)
+                    }
 
                     toggleTabs
                     capsuleGrid //
@@ -68,7 +64,7 @@ struct profilepage: View {
             Color.accentColor
                 .frame(maxWidth: .infinity, maxHeight: 150)
                 .edgesIgnoringSafeArea(.top)
-            
+
             Text("LockIt")
                 .fontWeight(.semibold)
                 .font(.system(size: 25))
@@ -76,54 +72,46 @@ struct profilepage: View {
                 .padding(.top, 45)
                 .padding(.bottom, 10)
                 .font(.custom("American Typewriter", size: 28))
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .foregroundColor(.white)
-                .padding(.top, 35)
-                .padding(.leading, 290)
+
         }
         .frame(height: 100)
     }
 
-    
     @ViewBuilder
     func bottomNavigationBar() -> some View {
         ZStack {
             Color.accentColor
                 .frame(maxWidth: .infinity, maxHeight: 100)
                 .edgesIgnoringSafeArea(.bottom)
-            
+
             HStack {
                 Spacer()
-                
+
                 NavigationLink(destination: ContentView()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "house")
                         .font(.system(size: 30))
                         .foregroundStyle(.white)
                 }
-                
+
                 Spacer(minLength: 90)
-                
+
                 NavigationLink(destination: SelectACapsuleView()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "plus.circle")
                         .font(.system(size: 35))
                         .foregroundStyle(.white)
                 }
-                
+
                 Spacer(minLength: 90)
-                
+
                 NavigationLink(destination: profilepage()
                     .navigationBarBackButtonHidden(true)) {
                     Image(systemName: "person.crop.circle")
                         .font(.system(size: 35))
                         .foregroundStyle(.white)
                 }
-                
+
                 Spacer()
             }
             .padding(.bottom, 15)
@@ -186,8 +174,6 @@ struct profilepage: View {
         .padding()
     }
 
-
-
     // MARK: - Capsule Unlock Logic
     func checkCapsuleUnlock(capsule: CapsuleItem) {
         let now = Date()
@@ -211,6 +197,21 @@ struct profilepage: View {
         let minutes = Int(remaining) / 60
         let seconds = Int(remaining) % 60
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+}
+
+// MARK: - SignUpView
+struct SignUpView: View {
+    var body: some View {
+        VStack {
+            Text("This is the Sign Up Page")
+                .font(.largeTitle)
+                .padding()
+
+            // Add your sign-up form elements here
+            Text("Add your sign-up form here.")
+        }
+        .navigationBarTitle("Sign Up", displayMode: .inline)
     }
 }
 

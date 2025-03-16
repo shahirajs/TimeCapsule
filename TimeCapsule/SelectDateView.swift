@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SelectDateView: View {
+    @State private var navigateToNextPage = false
     @State private var chosenDate: Date = Date() // Initial date set to current date
     @State private var isDatePickerVisible: Bool = false
     @State private var selectedDate: Date? = nil // Date the user selects
@@ -64,7 +65,7 @@ struct SelectDateView: View {
     @ViewBuilder
     func content() -> some View {
         VStack {
-            NavigationLink(destination: ContentView()) {
+            NavigationLink(destination: Homepage1View()) {
                 Image(systemName: "x.circle")
                     .resizable()
                     .scaledToFit()
@@ -123,7 +124,7 @@ struct SelectDateView: View {
                 .padding()
             }
             
-            NavigationLink(destination: ContentView()) {
+            NavigationLink(destination: BuryCapsuleView(selectedImage: selectedImage)) {
                 Text("Bury LockIt!")
                     .fontWeight(.bold)
                     .font(.system(size: 30))

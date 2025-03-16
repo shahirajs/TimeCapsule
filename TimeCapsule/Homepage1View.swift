@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct Homepage1View: View {
+    @State private var navigateToHomepage = false
+    @State private var navigateToSelectCapsule = false
+    @State private var navigateToProfile = false
+    
     var body: some View {
             NavigationStack {
                 ZStack {
@@ -45,7 +49,7 @@ struct Homepage1View: View {
                             .foregroundColor(Color("37357E"))
                             .multilineTextAlignment(.center)
                         
-                        NavigationLink(destination: ContentView()) {
+                        NavigationLink(destination: OpenLockIt()) {
                             Text("Open")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 30))
@@ -61,6 +65,7 @@ struct Homepage1View: View {
                         bottomNavigationBar()
                     }
                 }
+                .navigationBarBackButtonHidden(true)
             }
         }
         
@@ -92,47 +97,44 @@ struct Homepage1View: View {
             .frame(height: 100)
         }
         
-        @ViewBuilder
-        func bottomNavigationBar() -> some View {
-            ZStack {
-                Color.accentColor
-                    .frame(maxWidth: .infinity, maxHeight: 100)
-                    .edgesIgnoringSafeArea(.bottom)
+    @ViewBuilder
+    func bottomNavigationBar() -> some View {
+        ZStack {
+            Color.accentColor
+                .frame(maxWidth: .infinity, maxHeight: 100)
+                .edgesIgnoringSafeArea(.bottom)
+            
+            HStack {
+                Spacer()
                 
-                HStack {
-                    Spacer()
-                    
-                    NavigationLink(destination: ContentView()
-                        .navigationBarBackButtonHidden(true)) {
-                            Image(systemName: "house")
-                                .font(.system(size: 30))
-                                .foregroundStyle(.white)
-                        }
-                    
-                    Spacer(minLength: 90)
-                    
-                    NavigationLink(destination: ContentView()
-                        .navigationBarBackButtonHidden(true)) {
-                            Image(systemName: "plus.circle")
-                                .font(.system(size: 35))
-                                .foregroundStyle(.white)
-                        }
-                    
-                    Spacer(minLength: 90)
-                    
-                    NavigationLink(destination: ContentView()
-                        .navigationBarBackButtonHidden(true)) {
-                            Image(systemName: "person.crop.circle")
-                                .font(.system(size: 35))
-                                .foregroundStyle(.white)
-                        }
-                    
-                    Spacer()
+                NavigationLink(destination: Homepage1View().navigationBarBackButtonHidden(true), isActive: $navigateToHomepage) {
+                    Image(systemName: "house")
+                        .font(.system(size: 30))
+                        .foregroundStyle(.white)
                 }
                 
-                .padding(.bottom, 15)
+                Spacer(minLength: 90)
+                
+                NavigationLink(destination: SelectACapsuleView().navigationBarBackButtonHidden(true), isActive: $navigateToSelectCapsule) {
+                    Image(systemName: "plus.circle")
+                        .font(.system(size: 35))
+                        .foregroundStyle(.white)
+                }
+                
+                Spacer(minLength: 90)
+                
+                NavigationLink(destination: profilepage().navigationBarBackButtonHidden(true), isActive: $navigateToProfile) {
+                    Image(systemName: "person.crop.circle")
+                        .font(.system(size: 35))
+                        .foregroundStyle(.white)
+                }
+                
+                Spacer()
             }
+            .padding(.bottom, 15)
         }
+    }
+
         
         
         

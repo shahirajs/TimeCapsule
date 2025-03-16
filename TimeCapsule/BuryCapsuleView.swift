@@ -9,7 +9,9 @@ import SwiftUI
 
 struct BuryCapsuleView: View {
     let selectedImage: String // Store the selected image
-    
+    @State private var navigateToNextPage = false
+    @State private var showContent = false
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -17,22 +19,19 @@ struct BuryCapsuleView: View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-                
+
                 VStack {
-                    //orderHeader()
-                    
                     HStack {
                         Spacer()
-
                     }
-                    
+
                     Text("Your LockIt has been buried!")
                         .fontWeight(.semibold)
                         .font(.system(size: 40))
                         .foregroundColor(Color("F6C7CD"))
                         .padding(.top, 200)
                         .multilineTextAlignment(.center)
-                    
+
                     // Display the selected image
                     Image(selectedImage)
                         .resizable()
@@ -40,81 +39,26 @@ struct BuryCapsuleView: View {
                         .frame(height: 400)
                         .padding(.top, -15)
                         .padding()
-                    
+
                     Spacer()
-                    //bottomNavigationBar()
+                }
+
+                NavigationLink(destination: Homepage1View(), isActive: $navigateToNextPage) {
+                    EmptyView()
+                }
+                .hidden()
+            }
+            .onAppear {
+                // Start a 2-second delay before navigating
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    navigateToNextPage = true
                 }
             }
-        }
-    }
-    
-    @ViewBuilder
-    func orderHeader() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 150)
-                .edgesIgnoringSafeArea(.top)
-            
-            Text("Lockit")
-                .fontWeight(.semibold)
-                .font(.system(size: 25))
-                .foregroundStyle(.white)
-                .padding(.top, 45)
-                .padding(.bottom, 10)
-                .font(.custom("American Typewriter", size: 28))
-            
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .foregroundColor(.white)
-                .padding(.top, 35)
-                .padding(.leading, 290)
-        }
-        .frame(height: 100)
-    }
-    
-    @ViewBuilder
-    func bottomNavigationBar() -> some View {
-        ZStack {
-            Color.accentColor
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .edgesIgnoringSafeArea(.bottom)
-            
-            HStack {
-                Spacer()
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "house")
-                            .font(.system(size: 30))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 35))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer(minLength: 90)
-                
-                NavigationLink(destination: ContentView()
-                    .navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "person.crop.circle")
-                            .font(.system(size: 35))
-                            .foregroundStyle(.white)
-                    }
-                
-                Spacer()
-            }
-            .padding(.bottom, 15)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
+
 
 #Preview {
     BuryCapsuleView(selectedImage: "Rocket")

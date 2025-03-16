@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Homepage2View: View {
     
+    @State private var navigateToNextPage = false
     @State private var targetDate = Date().addingTimeInterval(10 * 365 * 24 * 60 * 60) // 10 years
     @State private var remainingTime: String = ""
 

@@ -14,7 +14,7 @@ struct SelectACapsuleView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    NavigationLink(destination: ContentView()) {
+                    NavigationLink(destination: Homepage1View()) {
                         Image(systemName: "x.circle")
                             .resizable()
                             .scaledToFit()

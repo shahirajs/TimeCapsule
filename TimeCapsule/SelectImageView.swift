@@ -2,6 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct SelectImageView: View {
+    @State private var navigateToNextPage = false
     @Binding var selectedImage: Image?
 
     @State private var selectedItem: PhotosPickerItem? = nil

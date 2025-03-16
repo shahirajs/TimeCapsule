@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct signup: View {
+    @State private var navigateToNextPage = false
     @State private var name = ""
         @State private var email = ""
         @State private var password = ""
@@ -27,7 +28,17 @@ struct signup: View {
                         orderHeader()
                             .padding(.top, -55) // Adjusted to move up
 
-                        Spacer()
+                        
+                        NavigationLink(destination: profilepage()) {
+                            Image(systemName: "x.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.white)
+                                .padding(.leading, 290)
+                                .padding(.top, 15)
+                                .padding(.bottom, 130)
+                        }
 
                         // **Sign Up Form - Raised Upwards**
                         VStack(spacing: 15) {
