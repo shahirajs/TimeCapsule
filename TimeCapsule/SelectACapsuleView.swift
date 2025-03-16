@@ -46,7 +46,7 @@ struct SelectACapsuleView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     
                     // Updated NavigationLink to navigate to NoteView
-                    NavigationLink(destination: NoteView().navigationBarBackButtonHidden(true), isActive: $navigateToNextPage) {
+                    NavigationLink(destination: HomepageView().navigationBarBackButtonHidden(true), isActive: $navigateToNextPage) {
                         Text("Next")
                             .fontWeight(.semibold)
                             .font(.system(size: 30))

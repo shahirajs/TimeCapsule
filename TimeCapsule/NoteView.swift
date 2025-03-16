@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 import AVFoundation
 
-struct NoteView: View {
+struct HomepageView: View {
     
     @State private var numberOfRectangles = 1
     @State private var currentIndex = 0
@@ -412,5 +412,5 @@ struct NoteView: View {
 
 
 #Preview {
-    NoteView()
+    HomepageView()
 }
